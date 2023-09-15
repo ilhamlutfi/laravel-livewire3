@@ -3,14 +3,11 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
-use Livewire\WithPagination;
+use Livewire\Attributes\Rule;
 
-class Clicker extends Component
+class FileUpload extends Component
 {
-    use WithPagination;
-    
     #[Rule('required|min:2|max:50|string')]
     public $name = '';
 
@@ -24,11 +21,8 @@ class Clicker extends Component
     {
         $data = $this->validate();
 
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password'])
-        ]);
+        $data['password'] = bcrypt($data['password']);
+        User::create($data);
 
         $this->reset('name', 'email', 'password');
 
@@ -37,8 +31,6 @@ class Clicker extends Component
 
     public function render()
     {
-        return view('livewire.clicker', [
-            'users' => User::paginate(5)
-        ]);
+        return view('livewire.file-upload');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\TodoForm;
 use App\Models\Todo;
-use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,64 +11,46 @@ class TodoList extends Component
 {
     use WithPagination;
 
-    #[Rule('required|min:3|max:50')]
-    public $name;
-
     public $search;
 
-    public $todoID;
-
-    #[Rule('required|min:3|max:50')]
-    public $updateName;
+    public TodoForm $form;
 
     public function store()
     {
-        $data = $this->validateOnly('name');
+        $this->validateOnly('form.name');
 
-        Todo::create($data);
-
-        $this->reset('name');
-
-        request()->session()->flash('success', 'Created');
+        $this->form->create();
 
         $this->resetPage();
     }
 
     public function edit($id)
     {
-        $this->todoID = $id;
-        $this->updateName = Todo::find($id)->name;
+        $this->form->show($id);
     }
 
     public function update()
     {
-        $this->validateOnly('updateName');
+        $this->validateOnly('form.updateName');
 
-        Todo::find($this->todoID)->update(['name' => $this->updateName]);
+        $this->form->update();
 
-        $this->resetEdit();
+        $this->form->resetCancel();
     }
 
     public function delete($id)
     {
-        try {
-            Todo::findOrFail($id)->delete();
-        } catch (\Throwable $th) {
-            session()->flash('error', 'Failed to delete todo');
-            return;
-        }
+        $this->form->destroy($id);
     }
 
     public function toggle($id)
     {
-        $todo = Todo::find($id);
-        $todo->completed = !$todo->completed;
-        $todo->save();
+        $this->form->setCheckboxToggle($id);
     }
 
     public function resetEdit()
     {
-        $this->reset('todoID', 'updateName');
+        $this->form->resetCancel();
     }
 
     public function render()

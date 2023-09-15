@@ -9,12 +9,12 @@
                 <input type="checkbox" wire:click='toggle({{ $todo->id }})' class="mr-2">
             @endif
 
-            @if ($todoID === $todo->id)
+            @if ($form->todoID === $todo->id)
                 <div>
-                    <input type="text" wire:model="updateName" placeholder="Todo.."
+                    <input type="text" wire:model="form.updateName" placeholder="Todo.."
                         class="bg-gray-100  text-gray-900 text-sm rounded block w-full p-2.5">
 
-                    @error('updateName')
+                    @error('form.updateName')
                         <span class="text-red-500 text-xs block">{{ $message }}</span>
                     @enderror
                 </div>
@@ -49,7 +49,7 @@
 
     <div class="mt-3 text-xs text-gray-700">
 
-        @if ($todoID === $todo->id)
+        @if ($form->todoID === $todo->id)
             <button wire:click="update({{ $todo->id }})"
                 class="mt-3 px-4 py-2 bg-teal-500 text-white font-semibold rounded hover:bg-teal-600">Update</button>
 
