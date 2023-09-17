@@ -12,7 +12,7 @@
                         </label>
 
                         <input type="text" wire:model='form.name' id="name" placeholder="Todo.."
-                            class="bg-gray-100  text-gray-900 text-sm rounded block w-full p-2.5">
+                            class="bg-gray-100 text-gray-900 text-sm rounded block w-full p-2.5">
 
                         @error('form.name')
                             <span class="text-red-500 text-xs mt-3 block ">{{ $message }}</span>

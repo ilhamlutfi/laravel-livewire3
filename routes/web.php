@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DatatableBootstrapController;
 use App\Http\Controllers\FileUploadController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,4 @@ Route::get('/', function () {
 });
 
 Route::get('file-upload', FileUploadController::class);
+Route::get('datatable-bootstrap', DatatableBootstrapController::class);

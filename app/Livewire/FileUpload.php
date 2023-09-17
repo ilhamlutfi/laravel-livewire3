@@ -2,29 +2,28 @@
 
 namespace App\Livewire;
 
+use App\Livewire\Forms\UploadForm;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
+use Livewire\WithFileUploads;
 
 class FileUpload extends Component
 {
-    #[Rule('required|min:2|max:50|string')]
-    public $name = '';
+    use WithFileUploads;
 
-    #[Rule('required|email|unique:users,email')]
-    public $email = '';
+    public UploadForm $form;
 
-    #[Rule('required|min:5')]
-    public $password = '';
-
-    public function createUser()
+    public function store()
     {
         $data = $this->validate();
 
-        $data['password'] = bcrypt($data['password']);
-        User::create($data);
+        if ($this->form->image) {
+            $data['image'] = $this->form->image->store('uploads', 'public');
+        }
 
-        $this->reset('name', 'email', 'password');
+        $this->form->create($data);
+        $this->form->image = '';
 
         request()->session()->flash('success', 'User created');
     }
